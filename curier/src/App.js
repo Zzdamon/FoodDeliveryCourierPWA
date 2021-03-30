@@ -3,6 +3,8 @@ import './App.css';
 import React from 'react';
 import { HubConnection } from 'signalr-client-react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
+import OrdersList from './components/OrdersList';
+import * as Yeat from './apis/yeat/yeat';
 
 // let connection = new HubConnection('/chat');
  
@@ -33,6 +35,8 @@ class App extends React.Component {
 
   componentDidMount(){
     this.start();
+    Yeat.fetchWaitingOrders()
+    .then(orders=> this.setState({orders:orders}))
   }
 
   start=async ()=> {
@@ -41,7 +45,7 @@ class App extends React.Component {
         this.state.connection.on("NewOrder",(order) => this.addNewOrder(order) ) ;
         console.log("SignalR Connected.");
 
-        this.state.connection.invoke("JoinRoom", "couriers")
+        this.state.connection.invoke("JoinRoom", "couriers",1232)
         // .catch(function (err) {
         //   return console.error(err.toString());})
         } 
@@ -67,7 +71,7 @@ class App extends React.Component {
   render(){
     return (
       <div className="App">
-      
+        <OrdersList orders={this.state.orders} connection={this.state.connection} />
       </div>
     );
   }
