@@ -11,6 +11,7 @@ function OrdersList(props) {
                    order={order}
                     connection={props.connection}
                     key={order.id}
+                    addTakenOrderToState={props.addTakenOrderToState}
                 />
             })}
         </div>

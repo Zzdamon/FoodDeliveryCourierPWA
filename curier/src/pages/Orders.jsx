@@ -5,6 +5,7 @@ import OrdersList from '../components/OrdersList';
 import Layout from '../components/Layout/Layout'
 import * as Yeat from '../apis/yeat/yeat';
 import { connect } from 'react-redux';
+import GoogleMap, { MapContainer } from '../apis/google maps/maps';
 
 class Orders extends React.Component {
 
@@ -12,6 +13,7 @@ class Orders extends React.Component {
       super(props);
   
       this.state={
+        currentOrder:null,
         user: props.user,
         orders:[],
         takenOrder:null,
@@ -23,18 +25,21 @@ class Orders extends React.Component {
     }
   
     componentDidMount(){
+      if(!this.state.user)
+        return;
       this.start();
       Yeat.fetchWaitingOrders()
       .then(orders=> this.setState({orders:orders}))
     }
   
+    //method to start connection with signalR
     start=async ()=> {
       try {
           await this.state.connection.start();
           this.state.connection.on("NewOrder",(order) => this.addNewOrder(order) ) ;
           console.log("SignalR Connected.");
   
-          this.state.connection.invoke("JoinRoom", "couriers",1232)
+          this.state.connection.invoke("JoinRoom", "couriers",this.state.user.data.courierId)
           // .catch(function (err) {
           //   return console.error(err.toString());})
           } 
@@ -45,6 +50,7 @@ class Orders extends React.Component {
     
     };
   
+    //Add new placed order to list in state
     addNewOrder(order){
       this.setState(prevState=>
         {return {
@@ -56,27 +62,40 @@ class Orders extends React.Component {
                  
       console.log(this.state.orders)
     }
+
+    //method to add taken order to state
+    addTakenOrderToState(order){
+      this.setState({currentOrder:order});
+    }
   
     render(){
       console.log(this.state)
-      if(!this.state.user){
+      if(!this.state.user.data){
         this.props.history.push('/login');
       }
+    if(!this.state.currentOrder){
       return (
         < Layout >
-          <OrdersList orders={this.state.orders} connection={this.state.connection} />
+          <OrdersList orders={this.state.orders} 
+          connection={this.state.connection}
+          addTakenOrderToState={(order)=>this.addTakenOrderToState(order)} />
         </ Layout>
-      );
+      );}
+      else {
+        return(
+          <GoogleMap order={this.state.currentOrder}
+          connection={this.state.connection}/>
+        )
+      }
     }
-  
-    
-  
   }
+  
+
   function mapStateToProps(state) {
     return {
-        user: state.user.data
+        user: state.user
     }
-}
+  }
 
 
   export default connect(mapStateToProps)(Orders);  
