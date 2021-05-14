@@ -6,6 +6,23 @@ export const fetchWaitingOrders=
 
 }
 
+export const updateOrder= 
+    (order)=>
+{  
+    return fetch(`http://localhost:5000/api/Orders/${order.orderId}`,
+        {
+            method: 'PUT', // or 'PUT'
+            headers: {
+                        'Content-Type': 'application/json',
+                     },
+            body: JSON.stringify(order),
+        })
+  .then(response => response.json())
+
+}
+
+
+
 
 export const auth=(email, password)=>{
     const auth= {email, password};

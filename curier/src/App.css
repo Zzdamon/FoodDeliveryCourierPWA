@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,39 @@
   to {
     transform: rotate(360deg);
   }
+}
+ */
+ body a {
+  color: black;
+}
+
+body a:hover {
+  color: black;
+}
+
+#order-prod-img{
+  max-width: 80px;
+  max-height: 80px;
+
+}
+
+#restLogo {
+  max-width: 120px;
+  max-height: 120px;
+}
+
+ #deliverOrderButton{
+  width: 170px;
+  height: 60px;
+  background-color: grey;
+  color: #fff;
+  text-align: center;
+  padding: 2px 2;
+
+ 
+  /* Position the tp text - see examples below! */
+  position: absolute;
+  left: 18px;
+  bottom:12px;
+  z-index: 1;
 }

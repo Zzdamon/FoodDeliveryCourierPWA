@@ -12,6 +12,8 @@ class Orders extends React.Component {
     constructor(props){
       super(props);
   
+      this.resetCurrentOrder=this.resetCurrentOrder.bind(this);
+
       this.state={
         currentOrder:null,
         user: props.user,
@@ -66,6 +68,16 @@ class Orders extends React.Component {
     //method to add taken order to state
     addTakenOrderToState(order){
       this.setState({currentOrder:order});
+      order.courierId= this.state.user.data.courierId;
+      Yeat.updateOrder(order)
+      .then(data=>console.log(data))
+      .catch(error=>console.log(error))
+    }
+
+    resetCurrentOrder(){
+      this.setState({currentOrder:null});
+      Yeat.fetchWaitingOrders()
+      .then(orders=> this.setState({orders:orders}))
     }
   
     render(){
@@ -84,7 +96,10 @@ class Orders extends React.Component {
       else {
         return(
           <GoogleMap order={this.state.currentOrder}
-          connection={this.state.connection}/>
+          connection={this.state.connection}
+          resetCurrentOrder={()=>this.resetCurrentOrder()}
+          />
+          
         )
       }
     }
