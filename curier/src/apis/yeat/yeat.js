@@ -39,8 +39,8 @@ export const auth=(email, password)=>{
   
 }
 
-export const register=(email, password,name,accountType)=>{
-    const user= {email, password,name,accountType};
+export const register=(email, password,firstName,lastName)=>{
+    const user= {email, password,firstName,lastName};
     
     return fetch('http://localhost:5000/api/Couriers',
         {

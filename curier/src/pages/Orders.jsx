@@ -34,11 +34,19 @@ class Orders extends React.Component {
       .then(orders=> this.setState({orders:orders}))
     }
   
+    removeOrder(orderToRemove){
+      let orders= this.state.orders;
+      const resultedOrders= orders.filter(order=>order.orderId!= orderToRemove.orderId);
+      this.setState({orders:resultedOrders});
+    }
+
     //method to start connection with signalR
     start=async ()=> {
       try {
           await this.state.connection.start();
           this.state.connection.on("NewOrder",(order) => this.addNewOrder(order) ) ;
+          this.state.connection.on("ExpiredOrder",(order) => this.removeOrder(order) ) ;
+
           console.log("SignalR Connected.");
   
           this.state.connection.invoke("JoinRoom", "couriers",this.state.user.data.courierId)

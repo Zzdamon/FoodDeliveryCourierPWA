@@ -24,7 +24,7 @@ changeHandler(event) {
 
     render(){
         return(
-            <form className="container-min-max-width d-flex flex-column m-2 w-25 "
+            <form className="container-min-max-width d-flex flex-column m-2 "
                 
                 onSubmit={(event) =>
                         {   event.preventDefault();
