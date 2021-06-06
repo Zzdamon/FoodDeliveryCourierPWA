@@ -75,7 +75,11 @@ class Orders extends React.Component {
     }
 
     resetCurrentOrder(){
+      console.log(this.state.currentOrder)
+      let order= this.state.currentOrder
+
       this.setState({currentOrder:null});
+      
       Yeat.fetchWaitingOrders()
       .then(orders=> this.setState({orders:orders}))
     }

@@ -16,19 +16,28 @@ import * as Yeat from "../yeat/yeat";
        connection:props.connection,
        currentLat:null,
        currentLng:null,
+       viewItems:false
      }
    }
 
-   updateOrder(){
+   async updateOrder(){
+    navigator.geolocation.clearWatch(this.positionWatcher);
+
      let order = this.state.order;
      order.stage= "INACTIVE";
      console.log(order);
-     Yeat.updateOrder(order);
-     this.props.resetCurrentOrder();
+     
+    Yeat.updateOrder(order);
+    // this.state.connection.invoke("FinishedOrder",order);
+
+    this.props.resetCurrentOrder();
+      
+      
    }
 
 
   componentDidMount() {
+    console.log(this.state)
     this._isMounted =true;
     if ("geolocation" in navigator && this._isMounted) {
      this.positionWatcher= navigator.geolocation.watchPosition((position)=>
@@ -52,7 +61,7 @@ import * as Yeat from "../yeat/yeat";
         title="Delivery Address"
         
           icon={{
-            url: "https://lh3.googleusercontent.com/proxy/IYlpwf47okoP6DpZgAtP59To7etUoN5uFsfsOf7g8KQZebDalmXQw6U_qKeIFrhtrUZ2DHM9TiZrCJ20FpWLf0osC5WBYP_NNcLS7AtYPaN_FjQij-Ky9-fNwA" ,
+            url: "https://i.imgur.com/VACWIpX.png" ,
             anchor: new window.google.maps.Point(36,36),
             scaledSize: new window.google.maps.Size(34,34)
           }}  
@@ -63,17 +72,34 @@ import * as Yeat from "../yeat/yeat";
 
         <Marker position={{  lat: this.state.currentLat , lng:  this.state.currentLng }} //courier address
          icon={{
-          url: "https://lh3.googleusercontent.com/proxy/HraTW0qVX4g_oYRYIx-voq93tlcKBtEZ9qnaISzNeMO3zNe4MZtnYRbVL02cVeXOO3CguaNiFF2AuQ2uLeeKErLqhKgKYXxe_CET_pY",
+          url: "https://i.imgur.com/qkHG3BF.png",
           anchor: new window.google.maps.Point(36,36),
           scaledSize: new window.google.maps.Size(34,34)
         }}  
       
         />
 
-        <button id="deliverOrderButton"
+        <button id="deliverOrderButton" className="mapsButton"
         onClick={()=>this.updateOrder()}>ORDER DELIVERED</button>
-        
+      {this.state.viewItems
+      ? <div id="mapsItemsMenu">
+      {this.state.order.orderItems.map(orderItem=>{
+        return <div >
+                <p>{orderItem.quantity} {orderItem.item.name}</p>
+                
+              </div>
+        }
+        )}
+        <button id="ExitShowItems" className="mapsButton"
+        onClick={()=>this.setState({viewItems:false})}>Exit</button>
+
+        </div>
+      : <button id="showItems" className="mapsButton"
+      onClick={()=>this.setState({viewItems:true})}>Show Items</button>
+      }
+
       </Map>
+        
     );
   }
 }
@@ -83,3 +109,4 @@ const GoogleMap=GoogleApiWrapper({
   apiKey: (googleApi.GOOGLE_API_KEY)
 })(MapContainer);
 export default GoogleMap;
+
