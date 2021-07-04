@@ -20,24 +20,26 @@ import * as Yeat from "../yeat/yeat";
      }
    }
 
-   async updateOrder(){
-    navigator.geolocation.clearWatch(this.positionWatcher);
+   async  updateOrder(){
+    // navigator.geolocation.clearWatch(this.positionWatcher);
+    
+     await this.state.connection.invoke("FinishedOrder" , this.state.order);
+     let orderToUpdate=
+     { ...this.state.order,
+       stage:"INACTIVE" } ;
 
-     let order = this.state.order;
-     order.stage= "INACTIVE";
-     console.log(order);
-     
-    Yeat.updateOrder(order);
-    // this.state.connection.invoke("FinishedOrder",order);
-
-    this.props.resetCurrentOrder();
-      
+     await Yeat.updateOrder(orderToUpdate);
+  
+     this.props.resetCurrentOrder();
+  
       
    }
 
 
   componentDidMount() {
     console.log(this.state)
+    // this.state.connection.invoke("TakeOrder", this.state.order)
+
     this._isMounted =true;
     if ("geolocation" in navigator && this._isMounted) {
      this.positionWatcher= navigator.geolocation.watchPosition((position)=>
@@ -80,7 +82,8 @@ import * as Yeat from "../yeat/yeat";
         />
 
         <button id="deliverOrderButton" className="mapsButton"
-        onClick={()=>this.updateOrder()}>ORDER DELIVERED</button>
+        onClick={ async ()=>this.updateOrder()}>ORDER DELIVERED</button>
+
       {this.state.viewItems
       ? <div id="mapsItemsMenu">
       {this.state.order.orderItems.map(orderItem=>{
@@ -103,6 +106,7 @@ import * as Yeat from "../yeat/yeat";
     );
   }
 }
+
 
  
 const GoogleMap=GoogleApiWrapper({

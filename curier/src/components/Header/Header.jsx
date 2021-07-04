@@ -10,10 +10,12 @@ import  { ReactComponent as Favourites} from '../../assets/icons/favFill.svg'
 function Header(props) {
     return(
         <header className="border-bottom mb-3">
-            <div className="container-fluid container-min-max-width d-flex justify-content-between align-items-center">
+            <div className="header-container container container-min-max-width d-flex justify-content-between align-items-center">
                 <Link to="/" className="my-3">
-                    <img src={Logo} alt="Game-Start" className="logo"/>
+                    <img src={Logo} alt="Yeat" className="logo"/>
+                  
                 </Link>
+                
                 <div>
                     { props.user
                         ?<Link to="/my-account">

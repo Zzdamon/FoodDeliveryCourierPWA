@@ -9,11 +9,10 @@ import './Footer.css';
 function Footer() {
     return(
         <footer className="pt-3 mt-3 bg-light">
-            <div className="container-fluid container-min-max-width d-flex justify-content-between">
+            <div className="container container-min-max-width d-flex justify-content-between">
                 <div className="footer-group d-flex flex-column">
                     <h3 className="h5">Quick Links:</h3>
                     <Link to='/my-account'>My Account</Link>
-                    <Link to='/orders'>My Orders</Link>
                 </div>
                 <div className="footer-group">
                     <h3 className="h5">Contact:</h3>

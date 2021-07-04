@@ -7,9 +7,9 @@ export const fetchWaitingOrders=
 }
 
 export const updateOrder= 
-    (order)=>
+  async  (order)=>
 {  
-    return fetch(`http://localhost:5000/api/Orders/${order.orderId}`,
+    await fetch(`http://localhost:5000/api/orders/${order.orderId}`,
         {
             method: 'PUT', // or 'PUT'
             headers: {
@@ -17,7 +17,8 @@ export const updateOrder=
                      },
             body: JSON.stringify(order),
         })
-  .then(response => response.json())
+//   .then(response => response.json())
+// return response
 
 }
 

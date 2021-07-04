@@ -13,6 +13,7 @@ class Orders extends React.Component {
       super(props);
   
       this.resetCurrentOrder=this.resetCurrentOrder.bind(this);
+      this.addTakenOrderToState=this.addTakenOrderToState.bind(this);
 
       this.state={
         currentOrder:null,
@@ -74,17 +75,25 @@ class Orders extends React.Component {
     }
 
     //method to add taken order to state
-    addTakenOrderToState(order){
-      this.setState({currentOrder:order});
-      order.courierId= this.state.user.data.courierId;
-      Yeat.updateOrder(order)
-      .then(data=>console.log(data))
-      .catch(error=>console.log(error))
+     addTakenOrderToState(order,connection){
+      // this.setState({currentOrder:order});
+      // order.courierId= this.state.user.data.courierId;
+      // // this.setState({currentOrder:order});
+      //  Yeat.updateOrder(order)
+      // .then(order=>{
+      //   connection.invoke("TakeOrder", order)
+              this.setState({currentOrder:order});
+              // return order;
+
+
+        // })
+      // .catch(error=>console.log(error))
     }
 
-    resetCurrentOrder(){
+    async resetCurrentOrder(){
       console.log(this.state.currentOrder)
       let order= this.state.currentOrder
+      // await this.state.connection.invoke("FinishedOrder", this.state.currentOrder)
 
       this.setState({currentOrder:null});
       
@@ -97,21 +106,35 @@ class Orders extends React.Component {
       if(!this.state.user.data){
         this.props.history.push('/login');
       }
-    if(!this.state.currentOrder){
-      return (
-        < Layout >
-          <OrdersList orders={this.state.orders} 
-          connection={this.state.connection}
-          addTakenOrderToState={(order)=>this.addTakenOrderToState(order)} />
-        </ Layout>
-      );}
+      if(this.state.orders.length>0){
+        
+        if(!this.state.currentOrder){
+          return (
+            < Layout >
+              <OrdersList orders={this.state.orders} 
+              connection={this.state.connection}
+              addTakenOrderToState={(order)=>this.addTakenOrderToState(order)}
+              user= {this.state.user} />
+            </ Layout>
+          );}
+          else {
+            return(
+              <GoogleMap order={this.state.currentOrder}
+              connection={this.state.connection}
+              resetCurrentOrder={()=>this.resetCurrentOrder()}
+              />
+              
+            )
+          }
+      }
       else {
-        return(
-          <GoogleMap order={this.state.currentOrder}
-          connection={this.state.connection}
-          resetCurrentOrder={()=>this.resetCurrentOrder()}
-          />
-          
+        return (
+          <Layout>
+             <div className="d-flex w-100 flex-column  align-items-center">
+             <h3>There are no available orders at this moment</h3>
+
+              </div>
+          </Layout>
         )
       }
     }

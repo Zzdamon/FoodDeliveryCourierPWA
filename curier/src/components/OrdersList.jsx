@@ -5,12 +5,13 @@ function OrdersList(props) {
     const { orders } = props;
 
     return (
-        <div className="container-fluid align-items-center d-flex flex-column my-4">
+        <div className="container-min-max-width align-self-center d-flex flex-column my-4">
             { orders.map((order) => {
-                return <OrderItem
+                return <OrderItem className="container-min-max-width m-2"
+                user= {props.user}
                    order={order}
                     connection={props.connection}
-                    key={order.id}
+                    key={order.orderId}
                     addTakenOrderToState={props.addTakenOrderToState}
                 />
             })}

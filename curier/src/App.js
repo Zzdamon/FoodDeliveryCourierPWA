@@ -9,6 +9,7 @@ import { Switch, Route } from "react-router-dom";
 import Orders from './pages/Orders';
 import Login from './pages/Login/Login';
 import Page404 from './pages/Page404';
+import MyAccount from './pages/MyAccount';
 
 
 // let connection = new HubConnection('/chat');
@@ -27,6 +28,7 @@ export default function App(){
     <div className="app">
       <Switch>
         <Route path="/login" component={Login}/>
+        <Route path="/my-account" component={MyAccount}/>
         <Route exact path="/" component={Orders}/>
         <Route path="*" component={Page404}/>
       </Switch>
