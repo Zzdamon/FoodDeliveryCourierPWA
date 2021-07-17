@@ -1,7 +1,7 @@
 import * as UserConstants from './UserConstants'
-let initialUser=JSON.parse(localStorage.getItem("yeat-courier"));
+// let initialUser=JSON.parse(localStorage.getItem("yeat-courier"));
 const initialState = {
-    data: initialUser,
+    data: null,
     loading: false,
     error: null
 };
@@ -15,7 +15,7 @@ export function userReducer(state = initialState, action) {
         case UserConstants.updateUserData:
             let user=action.payload;
             
-                localStorage.setItem("yeat-courier",JSON.stringify(user));
+                // localStorage.setItem("yeat-courier",JSON.stringify(user));
             
             return Object.assign({}, state, {
                 data: user,

@@ -28,9 +28,12 @@ class Orders extends React.Component {
     }
   
     componentDidMount(){
-      if(!this.state.user)
+      if(!this.state.user.data)
         return;
       this.start();
+      Yeat.getCurrentOrder(this.state.user.data.courierId)
+      .then(order => this.setState({currentOrder:order}))
+
       Yeat.fetchWaitingOrders()
       .then(orders=> this.setState({orders:orders}))
     }
@@ -106,9 +109,17 @@ class Orders extends React.Component {
       if(!this.state.user.data){
         this.props.history.push('/login');
       }
-      if(this.state.orders.length>0){
-        
-        if(!this.state.currentOrder){
+
+      if(this.state.currentOrder){ 
+        return(
+          <GoogleMap order={this.state.currentOrder}
+          connection={this.state.connection}
+          resetCurrentOrder={()=>this.resetCurrentOrder()}
+          />
+        )
+      }
+
+      if( this.state.orders.length > 0 ){ 
           return (
             < Layout >
               <OrdersList orders={this.state.orders} 
@@ -117,23 +128,13 @@ class Orders extends React.Component {
               user= {this.state.user} />
             </ Layout>
           );}
-          else {
-            return(
-              <GoogleMap order={this.state.currentOrder}
-              connection={this.state.connection}
-              resetCurrentOrder={()=>this.resetCurrentOrder()}
-              />
-              
-            )
-          }
-      }
-      else {
-        return (
-          <Layout>
-             <div className="d-flex w-100 flex-column  align-items-center">
-             <h3>There are no available orders at this moment</h3>
-
-              </div>
+        
+        else {
+          return (
+            <Layout>
+                <div className="d-flex w-100 flex-column  align-items-center">
+                  <h3>There are no available orders at this moment</h3>
+                </div>
           </Layout>
         )
       }

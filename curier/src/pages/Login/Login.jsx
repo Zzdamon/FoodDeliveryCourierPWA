@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../../assets/images/logo1.png';
-// import { ReactComponent as Google } from '../../assets/icons/google.svg';
-// import { ReactComponent as Facebook } from '../../assets/icons/facebook.svg';
 import './Login.css'
 import LoginForm from '../../components/LoginForm'
 import SignUpForm from '../../components/SignUpForm';
@@ -15,12 +13,6 @@ class Login extends React.Component {
             register: false
         }
     }
-
-    // componentDidUpdate(prevProps) {
-    //     if (this.props.user !== prevProps.user) {
-    //         this.props.history.push('/');
-    //     }
-    // }
 
     render() {
         return(
@@ -45,18 +37,5 @@ class Login extends React.Component {
         );
     }
 }
-
-// function mapStateToProps(state) {
-//     return {
-//         user: state.user.data
-//     }
-// }
-
-// function mapDispatchToProps(dispatch) {
-//     return {
-//         signInWithGoogle: () => dispatch(loginUser("google")),
-//         signInWithFacebook: () => dispatch(loginUser("facebook"))
-//     }
-// }
 
 export default Login;

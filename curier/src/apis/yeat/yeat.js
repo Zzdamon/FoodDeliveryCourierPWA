@@ -54,3 +54,11 @@ export const register=(email, password,firstName,lastName)=>{
   .then(response => response.json())
   
 }
+
+export const getCurrentOrder=(courierId)=>{
+    // const auth= {email, password};
+    
+    return fetch(`http://localhost:5000/api/Orders/ActiveByCourier/${courierId}`)
+    .then(response => response.json())
+  
+}
